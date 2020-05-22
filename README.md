@@ -19,4 +19,5 @@ The Software Preservation Society
 To build:
 
 cp Makefile.ps3 Makefile
+
 make
