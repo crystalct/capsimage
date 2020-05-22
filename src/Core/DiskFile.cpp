@@ -1,6 +1,22 @@
 #include "config.h"
 #include "stdafx.h"
 
+#ifdef PS3
+#include <ppu-lv2.h>
+#include <lv2/sysfs.h>
+#include <sys/stat.h>
+#include <sys/dirent.h>
+
+bool dirExist(const char* szDir)
+{
+	sysFSStat entry;
+	if( sysFsStat( szDir, &entry ) )
+		return false;
+	bool ret = ( ( entry.st_mode & S_IFDIR ) != 0 );
+	return ret;
+}
+#endif
+
 CDiskFile::CDiskFile()
 {
 	dfile=NULL;
@@ -250,7 +266,11 @@ void CDiskFile::MakePath(const char *filename)
 		if (filename[rpos] == '/' || filename[rpos] == '\\') {
 			path[wpos] = 0;
 
+#ifdef PS3
+			if(!dirExist(path))
+#else
 			if (_access(path, 0) == -1)
+#endif				
 				_mkdir(path);
 		}
 

@@ -32,11 +32,12 @@ SDWORD __cdecl CAPSInit()
 // stop caps image support
 SDWORD __cdecl CAPSExit()
 {
-	for (PCDISKIMAGE &actimg : img) {
-		delete actimg;
-		actimg = NULL;
-	}
-
+	// for (PCDISKIMAGE &actimg : img) {
+		// delete actimg;
+		// actimg = NULL;
+	// }
+	img.clear();
+	
 	return imgeOk;
 }
 
