@@ -14,3 +14,8 @@ Please use the forums for bug reports, do not submit tickets for this.
 
 Thank you for your support,
 The Software Preservation Society
+
+Porting Caps Image (static library) for PS3
+To build:
+cp Makefile.ps3 Makefile
+make
