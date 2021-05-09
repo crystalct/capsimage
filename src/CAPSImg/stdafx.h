@@ -46,7 +46,7 @@
 #include <unistd.h>
 #define MAX_PATH ( 260 )
 #ifndef __cdecl
-#if defined(__GNUC__) && !defined(__LP64__)
+#if defined(__GNUC__) && !defined(__LP64__) && !defined(__CELLOS_LV2__)
 #define __cdecl __attribute__((cdecl))
 #else
 #define __cdecl
@@ -108,7 +108,16 @@ typedef const char *LPCTSTR;
 #define _mkdir(x) mkdir(x)
 #endif
 #define d_namlen d_reclen
-#define __assume(cond) do { if (!(cond)) __builtin_unreachable(); } while (0)
+#define GCC_VERSION (__GNUC__ * 10000 \
+                               + __GNUC_MINOR__ * 100 \
+                               + __GNUC_PATCHLEVEL__)
+#if GCC_VERSION >= 40500
+#define my_unreachable()  __builtin_unreachable()
+#define __assume(cond) do { if (!(cond)) { printf("Oh noes!!!111\n"); abort(); } } while (0)
+#else
+//#define my_unreachable() do { printf("Oh noes!!!111\n"); abort(); } while(0)
+#define __assume(cond) do { if (!(cond)) { printf("Oh noes!!!111\n"); abort(); } } while (0)
+#endif
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
 typedef struct _SYSTEMTIME {

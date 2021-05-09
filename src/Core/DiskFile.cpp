@@ -1,7 +1,7 @@
 #include "config.h"
 #include "stdafx.h"
 
-#ifdef PS3
+#if defined (PS3) && !defined(__CELLOS_LV2__ )
 #include <ppu-lv2.h>
 #include <lv2/sysfs.h>
 #include <sys/stat.h>
@@ -14,6 +14,18 @@ bool dirExist(const char* szDir)
 		return false;
 	bool ret = ( ( entry.st_mode & S_IFDIR ) != 0 );
 	return ret;
+}
+#elif defined(__CELLOS_LV2__ )
+#include <cell/cell_fs.h>
+bool dirExist(const char* szDir)
+{
+	struct CellFsStat st;
+	if(cellFsStat(szDir,&st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR)) 
+	{
+		return true;
+	} else {
+		return false;
+	}
 }
 #endif
 

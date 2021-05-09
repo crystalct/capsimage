@@ -27,18 +27,9 @@ OBJS = $(CSOURCES:.c=.o) $(CPPSOURCES:.cpp=.o)
 
 .PHONY: $(TARGET) clean
 
-
-build:
-	@echo Build.....
-	@cp -f config.h.ps3  src/config.h
-	@cp -f CapsLibVersion.h.ps3 src/LibIPF/CapsLibVersion.h
-	$(MAKE) -f Makefile.ps3 $(TARGET)
-
 #---------------------------------------------------------------------------------
 $(TARGET): $(OBJS)
-	@echo linking....
-	@$(AR) rcs $@ $^
-	@echo $(TARGET) linked!
+	$(AR) rcs $@ $^
 	
 #---------------------------------------------------------------------------------
 clean:
@@ -46,6 +37,4 @@ clean:
 	@rm -fr src/CAPSImg/*.o src/Codec/*.o src/Core/*.o src/Device/*.o
 	@rm -fr *.a
 
-install: $(TARGET)
-	@echo Installing libcapsimg.a
-	@cp -f libcapsimg.a $(CELL_SDK)/target/ppu/lib/
+
